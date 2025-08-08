@@ -5,25 +5,19 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menuprincipal, menu)
-        return true
-    }
+        val btnContinuar: Button = findViewById(R.id.btncontinuar1)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_mapa -> startActivity(Intent(this, MapaActivity::class.java))
-            R.id.action_quienes -> startActivity(Intent(this, QuienesSomosActivity::class.java))
-            R.id.action_mision -> startActivity(Intent(this, MisionActivity::class.java))
-            R.id.action_vision -> startActivity(Intent(this, VisionActivity::class.java))
+        btnContinuar.setOnClickListener {
+            val intent = Intent(this, MainActivity2::class.java)
+            startActivity(intent)
+            finish()
         }
-        return super.onOptionsItemSelected(item)
     }
 }
