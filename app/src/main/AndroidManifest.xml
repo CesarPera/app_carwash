@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App_carwash">
         <activity
+            android:name=".AgregarProductoActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ProductoActivity"
+            android:exported="true" />
+        <activity
             android:name=".VisionActivity"
             android:exported="true" />
         <activity
