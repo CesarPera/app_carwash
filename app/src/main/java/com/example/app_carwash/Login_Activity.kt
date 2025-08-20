@@ -5,18 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
-class QuienesSomosActivity : AppCompatActivity() {
+class Login_Activity : AppCompatActivity() {
 
-    lateinit var btnvolver2 : Button
+    lateinit var btnvolver1 : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_quienes_somos)
+        setContentView(R.layout.activity_login)
 
-        btnvolver2 = findViewById(R.id.btnvolver2)
+        btnvolver1 = findViewById(R.id.btnvolver1)
 
-        btnvolver2.setOnClickListener {
-            val intent = Intent(this, MainActivity2::class.java)
+        btnvolver1.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
