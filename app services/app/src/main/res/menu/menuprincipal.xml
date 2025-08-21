@@ -24,4 +24,8 @@
         android:icon="@drawable/vision"
         android:title="Vision"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_buscar"
+        android:title="Buscar por Codigo" />
 </menu>
