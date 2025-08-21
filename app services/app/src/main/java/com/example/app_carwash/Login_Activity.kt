@@ -35,7 +35,7 @@ class Login_Activity : AppCompatActivity() {
 
             Thread {
                 try {
-                    val url = URL("http://192.168.1.2:8080/api/login")
+                    val url = URL(Conexion.getUrl("/api/login"))
                     val conn = url.openConnection() as HttpURLConnection
                     conn.requestMethod = "POST"
                     conn.setRequestProperty("Content-Type", "application/json; utf-8")
