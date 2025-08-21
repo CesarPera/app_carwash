@@ -6,11 +6,33 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 
 class MainActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
+
+    val btnServicio = findViewById<Button>(R.id.btnServicio)
+    val btnVentas = findViewById<Button>(R.id.btnVentas)
+    val btnPersonal = findViewById<Button>(R.id.btnPersonal)
+    val btnVehiculo = findViewById<Button>(R.id.btnVehiculo)
+
+        btnServicio.setOnClickListener {
+            startActivity(Intent(this, ServicioActivity::class.java))
+        }
+
+        btnVentas.setOnClickListener {
+            startActivity(Intent(this, VentasActivity::class.java))
+        }
+
+        btnPersonal.setOnClickListener {
+            startActivity(Intent(this, PersonalActivity::class.java))
+        }
+
+        btnVehiculo.setOnClickListener {
+            startActivity(Intent(this, VehiculoActivity::class.java))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

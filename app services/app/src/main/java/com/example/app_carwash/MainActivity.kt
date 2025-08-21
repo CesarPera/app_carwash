@@ -7,8 +7,10 @@ import android.widget.Button
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var btncontinuar : Button
-    lateinit var btncerrar : Button
+    lateinit var btncontinuar: Button
+    lateinit var btncerrar: Button
+    lateinit var btnver: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         btncontinuar = findViewById(R.id.btncontinuar1)
         btncerrar = findViewById(R.id.btncerrar1)
+        btnver = findViewById(R.id.btnVer)
 
         btncontinuar.setOnClickListener {
             val intent = Intent(this, Login_Activity::class.java)
@@ -26,5 +29,10 @@ class MainActivity : AppCompatActivity() {
         btncerrar.setOnClickListener {
             finish()
         }
+        btnver.setOnClickListener {
+            val intent = Intent(this, MainActivity2::class.java)
+            startActivity(intent)
+        }
     }
 }
+

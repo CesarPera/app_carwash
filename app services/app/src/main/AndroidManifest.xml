@@ -9,13 +9,25 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@drawable/iconoapp"
         android:label="transform wash"
         android:roundIcon="@drawable/iconoapp"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App_carwash">
+        android:theme="@style/Theme.App_carwash"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".VehiculoActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PersonalActivity"
+            android:exported="true" />
+        <activity
+            android:name=".VentasActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ServicioActivity"
+            android:exported="true" />
         <activity
             android:name=".Login_Activity"
             android:exported="true" />
@@ -48,6 +60,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
