@@ -124,6 +124,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Agregar"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_baseline_add_circle_outline_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.052"
@@ -136,6 +138,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Editar"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_baseline_edit_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -148,6 +152,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Eliminar"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_baseline_delete_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.943"
@@ -161,11 +167,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Regresar"
+        app:icon="@drawable/volver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintHorizontal_bias="0.906"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.991" />
+        app:layout_constraintVertical_bias="0.92" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

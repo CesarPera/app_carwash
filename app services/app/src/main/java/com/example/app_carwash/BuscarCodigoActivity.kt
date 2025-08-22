@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.content.Intent
 
 class BuscarCodigoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +15,7 @@ class BuscarCodigoActivity : AppCompatActivity() {
         val etCodigo = findViewById<EditText>(R.id.etCodigo)
         val btnBuscar = findViewById<Button>(R.id.btnBuscar)
         val tvResultado = findViewById<TextView>(R.id.tvResultado)
+        val btnRegresar = findViewById<Button>(R.id.btnregresar)
 
         btnBuscar.setOnClickListener {
             val codigo = etCodigo.text.toString().trim()
@@ -24,6 +26,11 @@ class BuscarCodigoActivity : AppCompatActivity() {
                 "S002" -> tvResultado.text = "Código: S002\nDescripción: Lavado Premium\nCosto: 35.0"
                 else -> tvResultado.text = "❌ No se encontró el servicio con código $codigo"
             }
+        }
+        btnRegresar.setOnClickListener {
+            val intent = Intent(this, AgregarProductoActivity::class.java)
+            startActivity(intent)
+            finish() // opcional: cierra esta actividad para que no quede en el stack
         }
     }
 }
