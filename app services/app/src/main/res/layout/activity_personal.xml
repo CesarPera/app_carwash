@@ -24,10 +24,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <!-- Dirección -->
-
-    <!-- Móvil -->
-
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
@@ -38,12 +34,14 @@
         app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.043" />
+        app:layout_constraintVertical_bias="0.053" />
+
+    <!-- Dirección -->
 
     <EditText
         android:id="@+id/edtNombre"
-        android:layout_width="411dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Ingrese nombre"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -51,9 +49,10 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.061"
+        app:layout_constraintVertical_bias="0.083"
         tools:ignore="TouchTargetSizeCheck" />
 
+    <!-- Móvil -->
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
@@ -64,23 +63,22 @@
         app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.115" />
+        app:layout_constraintVertical_bias="0.143" />
 
     <EditText
         android:id="@+id/edtDireccion"
-        android:layout_width="408dp"
-        android:layout_height="39dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Ingrese dirección"
         android:inputType="textPostalAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.134"
+        app:layout_constraintVertical_bias="0.176"
         tools:ignore="TouchTargetSizeCheck" />
 
-    <!-- Fecha de Ingreso -->
     <TextView
         android:id="@+id/textView15"
         android:layout_width="wrap_content"
@@ -91,12 +89,13 @@
         app:layout_constraintHorizontal_bias="0.021"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.185" />
+        app:layout_constraintVertical_bias="0.233" />
 
+    <!-- Fecha de Ingreso -->
     <EditText
         android:id="@+id/edtMovil"
-        android:layout_width="415dp"
-        android:layout_height="39dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Ingrese número móvil"
         android:inputType="phone"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -104,10 +103,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.208"
+        app:layout_constraintVertical_bias="0.269"
         tools:ignore="TouchTargetSizeCheck" />
-
-    <!-- Email -->
 
     <TextView
         android:id="@+id/textView17"
@@ -119,12 +116,13 @@
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.257" />
+        app:layout_constraintVertical_bias="0.323" />
 
+    <!-- Email -->
     <EditText
         android:id="@+id/edtFechaIngreso"
-        android:layout_width="404dp"
-        android:layout_height="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Ingrese fecha de ingreso"
         android:inputType="date"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -132,10 +130,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.282"
+        app:layout_constraintVertical_bias="0.362"
         tools:ignore="TouchTargetSizeCheck" />
-
-    <!-- Sueldo -->
 
     <TextView
         android:id="@+id/textView14"
@@ -144,11 +140,12 @@
         android:text="Email:"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.021"
+        app:layout_constraintHorizontal_bias="0.042"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33" />
+        app:layout_constraintVertical_bias="0.411" />
 
+    <!-- Sueldo -->
     <EditText
         android:id="@+id/edtEmail"
         android:layout_width="match_parent"
@@ -160,7 +157,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.352"
+        app:layout_constraintVertical_bias="0.454"
         tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
@@ -173,7 +170,7 @@
         app:layout_constraintHorizontal_bias="0.021"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.403" />
+        app:layout_constraintVertical_bias="0.501" />
 
     <EditText
         android:id="@+id/edtSueldo"
@@ -183,104 +180,50 @@
         android:inputType="numberDecimal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.434"
+        app:layout_constraintVertical_bias="0.558"
         tools:ignore="TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/btnAgregar"
-        android:layout_width="149dp"
-        android:layout_height="39dp"
+        android:layout_width="152dp"
+        android:layout_height="47dp"
         android:layout_weight="1"
         android:text="Agregar"
-        app:icon="@drawable/ic_baseline_beenhere_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.169"
+        app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499"
+        app:layout_constraintVertical_bias="0.64"
         tools:ignore="TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/btnEditar"
-        android:layout_width="152dp"
-        android:layout_height="38dp"
+        android:layout_width="191dp"
+        android:layout_height="49dp"
         android:layout_weight="1"
         android:text="Editar"
-        app:icon="@drawable/ic_baseline_edit_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.888"
+        app:layout_constraintHorizontal_bias="0.927"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.642" />
 
     <Button
         android:id="@+id/btnEliminar"
-        android:layout_width="138dp"
-        android:layout_height="38dp"
+        android:layout_width="292dp"
+        android:layout_height="53dp"
         android:layout_weight="1"
         android:text="Eliminar"
-        app:icon="@drawable/ic_baseline_delete_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="@+id/btnAgregar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.553" />
-
-    <ScrollView
-        android:layout_width="366dp"
-        android:layout_height="251dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.902">
-
-        <TableLayout
-            android:id="@+id/tbproductos"
-            android:layout_width="338dp"
-            android:layout_height="331dp"
-            android:scrollbarStyle="outsideInset"
-            android:scrollbarTrackVertical="@drawable/ic_baseline_airplay_24"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.646"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.902">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </TableLayout>
-    </ScrollView>
-    <Button
-        android:id="@+id/btnRegresar"
-        android:layout_width="152dp"
-        android:layout_height="38dp"
-        android:text="Regresar"
-        app:icon="@drawable/ic_baseline_keyboard_double_arrow_left_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.715" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
