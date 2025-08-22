@@ -46,6 +46,8 @@ class MainActivity2 : AppCompatActivity() {
             R.id.action_quienes -> startActivity(Intent(this, QuienesSomosActivity::class.java))
             R.id.action_mision -> startActivity(Intent(this, MisionActivity::class.java))
             R.id.action_vision -> startActivity(Intent(this, VisionActivity::class.java))
+            R.id.menu_buscar_codigo -> startActivity(Intent(this, BuscarCodigoActivity::class.java))
+
         }
         return super.onOptionsItemSelected(item)
     }

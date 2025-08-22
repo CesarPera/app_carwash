@@ -12,7 +12,7 @@ import android.content.Intent
 
 
 class AgregarProductoActivity : AppCompatActivity() {
-    var tbproductos: TableLayout?=null
+    var tbproductos: TableLayout? = null
     lateinit var et1: EditText
     lateinit var et2: EditText
     lateinit var et3: EditText
@@ -21,99 +21,157 @@ class AgregarProductoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        et1=findViewById(R.id.et1)
-        et2=findViewById(R.id.et2)
-        et3=findViewById(R.id.et3)
-        val btncerrar=findViewById<Button>(R.id.btnregresar)
+        et1 = findViewById(R.id.et1)
+        et2 = findViewById(R.id.et2)
+        et3 = findViewById(R.id.et3)
 
-        val boton1=findViewById<Button>(R.id.btnagregar)
+        val btnCerrar = findViewById<Button>(R.id.btnregresar)
+        val btnAgregar = findViewById<Button>(R.id.btnagregar)
+        val btnEditar = findViewById<Button>(R.id.btneditar)
+        val btnEliminar = findViewById<Button>(R.id.btneliminar)
 
-        tbproductos=findViewById(R.id.tbproductos)
+        tbproductos = findViewById(R.id.tbproductos)
         tbproductos?.removeAllViews()
 
-        boton1.setOnClickListener {
+        // BOTÓN AGREGAR
+        btnAgregar.setOnClickListener {
+            val codigo = et1.text.toString()
+            val descripcion = et2.text.toString()
+            val precio = et3.text.toString()
 
-            var codigo=et1.text.toString()
-            var descripcion=et2.text.toString()
-            var precio=et3.text.toString()
-
-            if(codigo.isEmpty()==false && descripcion.isEmpty()==false && precio.isEmpty()==false){
+            if (codigo.isNotEmpty() && descripcion.isNotEmpty() && precio.isNotEmpty()) {
                 llenarTabla()
-                et1.setText("")
-                et2.setText("")
-                et3.setText("")
+                limpiarCampos()
                 Toast.makeText(this, "Se cargaron los datos del artículo", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this,"Los campos deben tener texto", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Los campos deben tener texto", Toast.LENGTH_LONG).show()
             }
         }
 
-        btncerrar.setOnClickListener{
+        // BOTÓN EDITAR
+        btnEditar.setOnClickListener {
+            editarRegistro()
+        }
+
+        // BOTÓN ELIMINAR
+        btnEliminar.setOnClickListener {
+            eliminarRegistro()
+        }
+
+        // BOTÓN REGRESAR
+        btnCerrar.setOnClickListener {
             cerrar()
         }
     }
-    fun llenarTabla(){
-        //tbproductos?.removeAllViews()
 
-        val registro= LayoutInflater.from(this).inflate(R.layout.listar_layout,null,false)
-        val tvCodigo=registro.findViewById<View>(R.id.tvCodigo) as TextView
-        val tvDescripcion=registro.findViewById<View>(R.id.tvDescripcion) as TextView
-        val tvPrecio=registro.findViewById<View>(R.id.tvPrecio) as TextView
-        tvCodigo.setText(et1.text.toString())
-        tvDescripcion.setText(et2.text.toString())
-        tvPrecio.setText(et3.text.toString())
+    // 🔹 Agregar registro
+    fun llenarTabla() {
+        val registro = LayoutInflater.from(this).inflate(R.layout.listar_layout, null, false)
+        val tvCodigo = registro.findViewById<View>(R.id.tvCodigo) as TextView
+        val tvDescripcion = registro.findViewById<View>(R.id.tvDescripcion) as TextView
+        val tvPrecio = registro.findViewById<View>(R.id.tvPrecio) as TextView
+
+        tvCodigo.text = et1.text.toString()
+        tvDescripcion.text = et2.text.toString()
+        tvPrecio.text = et3.text.toString()
+
+        // Hacemos que cada fila pueda ser seleccionada
+        registro.setOnClickListener {
+            clickRegistroProducto(registro)
+        }
 
         tbproductos?.addView(registro)
     }
 
-    fun clickRegistroProducto(view: View){
+    // 🔹 Seleccionar registro
+    fun clickRegistroProducto(view: View) {
         resetColorRegistros()
         view.setBackgroundColor(Color.GRAY)
-        val registro=view as TableRow
-        val controlCodigo=registro.getChildAt(0) as TextView
-        val controlnombre=registro.getChildAt(1) as TextView
-        val controlprecio=registro.getChildAt(2) as TextView
-        val codigo=controlCodigo.text.toString()
-        val nombre=controlnombre.text.toString()
-        val precio=controlprecio.text.toString()
 
-        if(!codigo.isEmpty()){
+        val registro = view as TableRow
+        val controlCodigo = registro.getChildAt(0) as TextView
+        val controlNombre = registro.getChildAt(1) as TextView
+        val controlPrecio = registro.getChildAt(2) as TextView
 
+        val codigo = controlCodigo.text.toString()
+        val nombre = controlNombre.text.toString()
+        val precio = controlPrecio.text.toString()
 
-            et1?.setText(codigo.toString())
-            et2?.setText(nombre.toString())
-            et3?.setText(precio.toString())
-        }else{
-            et1?.setText("")
-            et2?.setText("")
-            et3?.setText("")
-            Toast.makeText(this, "No se ha encontrado ningun registro", Toast.LENGTH_SHORT).show()
+        if (codigo.isNotEmpty()) {
+            et1.setText(codigo)
+            et2.setText(nombre)
+            et3.setText(precio)
+        } else {
+            limpiarCampos()
+            Toast.makeText(this, "No se ha encontrado ningún registro", Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun resetColorRegistros(){
-        for (i in 0 .. tbproductos!!.childCount){
-            val registros=tbproductos?.getChildAt(i)
+    // 🔹 Editar registro seleccionado
+    fun editarRegistro() {
+        for (i in 0 until tbproductos!!.childCount) {
+            val fila = tbproductos?.getChildAt(i) as TableRow
+            if ((fila.background as? android.graphics.drawable.ColorDrawable)?.color == Color.GRAY) {
+                val tvCodigo = fila.getChildAt(0) as TextView
+                val tvDescripcion = fila.getChildAt(1) as TextView
+                val tvPrecio = fila.getChildAt(2) as TextView
+
+                tvCodigo.text = et1.text.toString()
+                tvDescripcion.text = et2.text.toString()
+                tvPrecio.text = et3.text.toString()
+
+                Toast.makeText(this, "Registro editado", Toast.LENGTH_SHORT).show()
+                limpiarCampos()
+                resetColorRegistros()
+                return
+            }
+        }
+        Toast.makeText(this, "Seleccione un registro para editar", Toast.LENGTH_SHORT).show()
+    }
+
+    // 🔹 Eliminar registro seleccionado
+    fun eliminarRegistro() {
+        for (i in 0 until tbproductos!!.childCount) {
+            val fila = tbproductos?.getChildAt(i) as TableRow
+            if ((fila.background as? android.graphics.drawable.ColorDrawable)?.color == Color.GRAY) {
+                tbproductos?.removeView(fila)
+                Toast.makeText(this, "Registro eliminado", Toast.LENGTH_SHORT).show()
+                limpiarCampos()
+                return
+            }
+        }
+        Toast.makeText(this, "Seleccione un registro para eliminar", Toast.LENGTH_SHORT).show()
+    }
+
+    // 🔹 Resetear colores de filas
+    fun resetColorRegistros() {
+        for (i in 0 until tbproductos!!.childCount) {
+            val registros = tbproductos?.getChildAt(i)
             registros?.setBackgroundColor(Color.WHITE)
         }
     }
 
-    fun cerrar(){
+    // 🔹 Limpiar campos
+    fun limpiarCampos() {
+        et1.setText("")
+        et2.setText("")
+        et3.setText("")
+    }
+
+    // 🔹 Cerrar Activity
+    fun cerrar() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder
             .setMessage("¿Desea regresar a la página de inicio?")
             .setTitle("Regresar")
-            .setPositiveButton(android.R.string.yes) { dialog, which ->
+            .setPositiveButton(android.R.string.yes) { _, _ ->
                 Toast.makeText(applicationContext, "Regresando a inicio", Toast.LENGTH_SHORT).show()
 
-                // Ir a MA2
                 val intent = Intent(this, MainActivity2::class.java)
                 startActivity(intent)
-
-                // Cerrar la activity actual para que no quede en el stack
                 finish()
             }
-            .setNegativeButton(android.R.string.no) { dialog, which ->
+            .setNegativeButton(android.R.string.no) { _, _ ->
                 Toast.makeText(applicationContext, "Cancelado", Toast.LENGTH_SHORT).show()
             }
 

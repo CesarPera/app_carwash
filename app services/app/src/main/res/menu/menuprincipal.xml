@@ -26,6 +26,8 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/action_buscar"
-        android:title="Buscar por Codigo" />
+        android:id="@+id/menu_buscar_codigo"
+        android:title="Buscar por Código"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="ifRoom"/>
 </menu>

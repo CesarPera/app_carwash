@@ -17,6 +17,9 @@
         android:theme="@style/Theme.App_carwash"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".BuscarCodigoActivity"
+            android:exported="true" />
+        <activity
             android:name=".VehiculoActivity"
             android:exported="true" />
         <activity
