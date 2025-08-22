@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/servicios")
+@CrossOrigin(origins = "*")
 public class servicio_controlador {
     @Autowired
     private servicio_negocio negocio;

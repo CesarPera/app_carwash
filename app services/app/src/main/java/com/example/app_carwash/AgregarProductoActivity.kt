@@ -8,8 +8,16 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import android.content.Intent
+import org.json.JSONObject
+import org.json.JSONArray
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 class AgregarProductoActivity : AppCompatActivity() {
+
     var tbproductos: TableLayout? = null
     lateinit var et1: EditText
     lateinit var et2: EditText
@@ -31,6 +39,9 @@ class AgregarProductoActivity : AppCompatActivity() {
         tbproductos = findViewById(R.id.tbproductos)
         tbproductos?.removeAllViews()
 
+        // ✅ Listar productos al iniciar
+        listarProductosBackend()
+
         // BOTÓN AGREGAR
         btnAgregar.setOnClickListener {
             val codigo = et1.text.toString()
@@ -38,9 +49,7 @@ class AgregarProductoActivity : AppCompatActivity() {
             val precio = et3.text.toString()
 
             if (codigo.isNotEmpty() && descripcion.isNotEmpty() && precio.isNotEmpty()) {
-                llenarTabla()
-                limpiarCampos()
-                Toast.makeText(this, "Se cargaron los datos del artículo", Toast.LENGTH_SHORT).show()
+                agregarProductoBackend(codigo, descripcion, precio.toFloat())
             } else {
                 Toast.makeText(this, "Los campos deben tener texto", Toast.LENGTH_LONG).show()
             }
@@ -48,12 +57,24 @@ class AgregarProductoActivity : AppCompatActivity() {
 
         // BOTÓN EDITAR
         btnEditar.setOnClickListener {
-            editarRegistro()
+            val codigo = et1.text.toString()
+            val descripcion = et2.text.toString()
+            val precio = et3.text.toString()
+            if (codigo.isNotEmpty()) {
+                actualizarProductoBackend(codigo, descripcion, precio.toFloat())
+            } else {
+                Toast.makeText(this, "Seleccione un producto para editar", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // BOTÓN ELIMINAR
         btnEliminar.setOnClickListener {
-            eliminarRegistro()
+            val codigo = et1.text.toString()
+            if (codigo.isNotEmpty()) {
+                eliminarProductoBackend(codigo)
+            } else {
+                Toast.makeText(this, "Seleccione un producto para eliminar", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // BOTÓN REGRESAR
@@ -62,22 +83,162 @@ class AgregarProductoActivity : AppCompatActivity() {
         }
     }
 
-    // 🔹 Agregar registro
-    fun llenarTabla() {
+    // 🔹 Listar todos los productos desde backend
+    private fun listarProductosBackend() {
+        Thread {
+            try {
+                val url = URL(Conexion.getUrl("/servicios"))
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "GET"
+                conn.setRequestProperty("Content-Type", "application/json; utf-8")
+
+                val responseCode = conn.responseCode
+                val response = BufferedReader(InputStreamReader(conn.inputStream)).use { it.readText() }
+
+                runOnUiThread {
+                    if (responseCode in 200..299) {
+                        val jsonArray = JSONArray(response)
+                        tbproductos?.removeAllViews()
+                        for (i in 0 until jsonArray.length()) {
+                            val json = jsonArray.getJSONObject(i)
+                            llenarTablaBackend(json)
+                        }
+                    } else {
+                        Toast.makeText(this, "Error al listar productos", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                conn.disconnect()
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }.start()
+    }
+
+    // 🔹 Agregar producto al backend
+    private fun agregarProductoBackend(id: String, descripcion: String, costo: Float) {
+        val json = JSONObject()
+        json.put("idservicio", id)
+        json.put("descripcion", descripcion)
+        json.put("costo", costo)
+
+        Thread {
+            try {
+                val url = URL(Conexion.getUrl("/servicios"))
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "POST"
+                conn.setRequestProperty("Content-Type", "application/json; utf-8")
+                conn.doOutput = true
+
+                OutputStreamWriter(conn.outputStream).use { it.write(json.toString()) }
+
+                val responseCode = conn.responseCode
+
+                runOnUiThread {
+                    if (responseCode in 200..299) {
+                        Toast.makeText(this, "Producto agregado correctamente", Toast.LENGTH_SHORT).show()
+                        limpiarCampos()
+                        listarProductosBackend()
+                    } else {
+                        Toast.makeText(this, "Error al agregar producto", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                conn.disconnect()
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }.start()
+    }
+
+    // 🔹 Actualizar producto en backend
+    private fun actualizarProductoBackend(id: String, descripcion: String, costo: Float) {
+        val json = JSONObject()
+        json.put("idservicio", id)
+        json.put("descripcion", descripcion)
+        json.put("costo", costo)
+
+        Thread {
+            try {
+                val url = URL(Conexion.getUrl("/servicios/actualizar"))
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "PUT"
+                conn.setRequestProperty("Content-Type", "application/json; utf-8")
+                conn.doOutput = true
+
+                OutputStreamWriter(conn.outputStream).use { it.write(json.toString()) }
+
+                val responseCode = conn.responseCode
+
+                runOnUiThread {
+                    if (responseCode in 200..299) {
+                        Toast.makeText(this, "Producto actualizado correctamente", Toast.LENGTH_SHORT).show()
+                        limpiarCampos()
+                        resetColorRegistros()
+                        listarProductosBackend()
+                    } else {
+                        Toast.makeText(this, "Error al actualizar producto", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                conn.disconnect()
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }.start()
+    }
+
+    // 🔹 Eliminar producto en backend
+    private fun eliminarProductoBackend(id: String) {
+        val json = JSONObject()
+        json.put("idservicio", id)
+
+        Thread {
+            try {
+                val url = URL(Conexion.getUrl("/servicios/eliminar"))
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "DELETE"
+                conn.setRequestProperty("Content-Type", "application/json; utf-8")
+                conn.doOutput = true
+
+                OutputStreamWriter(conn.outputStream).use { it.write(json.toString()) }
+
+                val responseCode = conn.responseCode
+
+                runOnUiThread {
+                    if (responseCode in 200..299) {
+                        Toast.makeText(this, "Producto eliminado correctamente", Toast.LENGTH_SHORT).show()
+                        limpiarCampos()
+                        resetColorRegistros()
+                        listarProductosBackend()
+                    } else {
+                        Toast.makeText(this, "Error al eliminar producto", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                conn.disconnect()
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }.start()
+    }
+
+    // 🔹 Llenar tabla desde JSON
+    private fun llenarTablaBackend(json: JSONObject) {
         val registro = LayoutInflater.from(this).inflate(R.layout.listar_layout, null, false)
-        val tvCodigo = registro.findViewById<View>(R.id.tvCodigo) as TextView
-        val tvDescripcion = registro.findViewById<View>(R.id.tvDescripcion) as TextView
-        val tvPrecio = registro.findViewById<View>(R.id.tvPrecio) as TextView
+        val tvCodigo = registro.findViewById<TextView>(R.id.tvCodigo)
+        val tvDescripcion = registro.findViewById<TextView>(R.id.tvDescripcion)
+        val tvPrecio = registro.findViewById<TextView>(R.id.tvPrecio)
 
-        tvCodigo.text = et1.text.toString()
-        tvDescripcion.text = et2.text.toString()
-        tvPrecio.text = et3.text.toString()
+        tvCodigo.text = json.optString("idservicio")
+        tvDescripcion.text = json.optString("descripcion")
+        tvPrecio.text = json.optDouble("costo").toString()
 
-        // Hacemos que cada fila pueda ser seleccionada
-        registro.setOnClickListener {
-            clickRegistroProducto(registro)
-        }
-
+        registro.setOnClickListener { clickRegistroProducto(registro) }
         tbproductos?.addView(registro)
     }
 
@@ -91,61 +252,15 @@ class AgregarProductoActivity : AppCompatActivity() {
         val controlNombre = registro.getChildAt(1) as TextView
         val controlPrecio = registro.getChildAt(2) as TextView
 
-        val codigo = controlCodigo.text.toString()
-        val nombre = controlNombre.text.toString()
-        val precio = controlPrecio.text.toString()
-
-        if (codigo.isNotEmpty()) {
-            et1.setText(codigo)
-            et2.setText(nombre)
-            et3.setText(precio)
-        } else {
-            limpiarCampos()
-            Toast.makeText(this, "No se ha encontrado ningún registro", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    // 🔹 Editar registro seleccionado
-    fun editarRegistro() {
-        for (i in 0 until tbproductos!!.childCount) {
-            val fila = tbproductos?.getChildAt(i) as TableRow
-            if ((fila.background as? android.graphics.drawable.ColorDrawable)?.color == Color.GRAY) {
-                val tvCodigo = fila.getChildAt(0) as TextView
-                val tvDescripcion = fila.getChildAt(1) as TextView
-                val tvPrecio = fila.getChildAt(2) as TextView
-
-                tvCodigo.text = et1.text.toString()
-                tvDescripcion.text = et2.text.toString()
-                tvPrecio.text = et3.text.toString()
-
-                Toast.makeText(this, "Registro editado", Toast.LENGTH_SHORT).show()
-                limpiarCampos()
-                resetColorRegistros()
-                return
-            }
-        }
-        Toast.makeText(this, "Seleccione un registro para editar", Toast.LENGTH_SHORT).show()
-    }
-
-    // 🔹 Eliminar registro seleccionado
-    fun eliminarRegistro() {
-        for (i in 0 until tbproductos!!.childCount) {
-            val fila = tbproductos?.getChildAt(i) as TableRow
-            if ((fila.background as? android.graphics.drawable.ColorDrawable)?.color == Color.GRAY) {
-                tbproductos?.removeView(fila)
-                Toast.makeText(this, "Registro eliminado", Toast.LENGTH_SHORT).show()
-                limpiarCampos()
-                return
-            }
-        }
-        Toast.makeText(this, "Seleccione un registro para eliminar", Toast.LENGTH_SHORT).show()
+        et1.setText(controlCodigo.text.toString())
+        et2.setText(controlNombre.text.toString())
+        et3.setText(controlPrecio.text.toString())
     }
 
     // 🔹 Resetear colores de filas
     fun resetColorRegistros() {
         for (i in 0 until tbproductos!!.childCount) {
-            val registros = tbproductos?.getChildAt(i)
-            registros?.setBackgroundColor(Color.WHITE)
+            tbproductos?.getChildAt(i)?.setBackgroundColor(Color.WHITE)
         }
     }
 
@@ -158,22 +273,14 @@ class AgregarProductoActivity : AppCompatActivity() {
 
     // 🔹 Cerrar Activity
     fun cerrar() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder
-            .setMessage("¿Desea regresar a la página de inicio?")
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("¿Desea regresar a la página de inicio?")
             .setTitle("Regresar")
             .setPositiveButton(android.R.string.yes) { _, _ ->
-                Toast.makeText(applicationContext, "Regresando a inicio", Toast.LENGTH_SHORT).show()
-
-                val intent = Intent(this, MainActivity2::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, MainActivity2::class.java))
                 finish()
             }
-            .setNegativeButton(android.R.string.no) { _, _ ->
-                Toast.makeText(applicationContext, "Cancelado", Toast.LENGTH_SHORT).show()
-            }
-
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+            .setNegativeButton(android.R.string.no) { _, _ -> }
+        builder.create().show()
     }
 }

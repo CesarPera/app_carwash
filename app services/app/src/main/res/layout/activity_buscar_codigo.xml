@@ -7,41 +7,38 @@
     android:background="#00BCD4"
     android:padding="16dp">
 
-    <!-- Contenido desplazable -->
+    <EditText
+        android:id="@+id/etCodigo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Ingrese código del servicio"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/btnBuscar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Buscar"
+        app:layout_constraintTop_toBottomOf="@id/etCodigo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <ScrollView
-        android:id="@+id/scrollContent"
+        android:id="@+id/scrollResultados"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnBuscar"
         app:layout_constraintBottom_toTopOf="@id/btnregresar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
+        <TableLayout
+            android:id="@+id/tbproductosBuscar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/etCodigo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ingrese código del servicio" />
-
-            <Button
-                android:id="@+id/btnBuscar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Buscar"
-                app:icon="@drawable/ic_baseline_buscar" />
-
-            <TextView
-                android:id="@+id/tvResultado"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="16dp"
-                android:text="Aquí aparecerán los detalles..." />
-        </LinearLayout>
+            android:stretchColumns="*"/>
     </ScrollView>
 
     <Button
@@ -49,11 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Regresar"
-        app:icon="@drawable/volver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.872"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.866" />
+        app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

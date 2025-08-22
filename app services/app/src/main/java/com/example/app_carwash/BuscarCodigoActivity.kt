@@ -1,36 +1,107 @@
 package com.example.app_carwash
 
+import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.content.Intent
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.*
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
 
 class BuscarCodigoActivity : AppCompatActivity() {
+
+    lateinit var etCodigo: EditText
+    lateinit var btnBuscar: Button
+    lateinit var btnRegresar: Button
+    lateinit var tbProductos: TableLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buscar_codigo)
 
-        val etCodigo = findViewById<EditText>(R.id.etCodigo)
-        val btnBuscar = findViewById<Button>(R.id.btnBuscar)
-        val tvResultado = findViewById<TextView>(R.id.tvResultado)
-        val btnRegresar = findViewById<Button>(R.id.btnregresar)
+        etCodigo = findViewById(R.id.etCodigo)
+        btnBuscar = findViewById(R.id.btnBuscar)
+        btnRegresar = findViewById(R.id.btnregresar)
+        tbProductos = findViewById(R.id.tbproductosBuscar)  
 
         btnBuscar.setOnClickListener {
             val codigo = etCodigo.text.toString().trim()
-
-            // 🔍 Ejemplo estático: luego aquí conectarás con tu BD
-            when (codigo) {
-                "S001" -> tvResultado.text = "Código: S001\nDescripción: Lavado básico\nCosto: 20.0"
-                "S002" -> tvResultado.text = "Código: S002\nDescripción: Lavado Premium\nCosto: 35.0"
-                else -> tvResultado.text = "❌ No se encontró el servicio con código $codigo"
+            if (codigo.isEmpty()) {
+                Toast.makeText(this, "Ingrese un código", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+            buscarProductoBackend(codigo)
         }
+
         btnRegresar.setOnClickListener {
             val intent = Intent(this, AgregarProductoActivity::class.java)
             startActivity(intent)
-            finish() // opcional: cierra esta actividad para que no quede en el stack
+            finish()
+        }
+    }
+
+    private fun buscarProductoBackend(codigo: String) {
+        val json = JSONObject().apply { put("idservicio", codigo) }
+
+        Thread {
+            try {
+                val url = URL(Conexion.getUrl("/servicios/buscar"))
+                val conn = url.openConnection() as HttpURLConnection
+                conn.requestMethod = "POST"
+                conn.setRequestProperty("Content-Type", "application/json; utf-8")
+                conn.doOutput = true
+
+                OutputStreamWriter(conn.outputStream).use { it.write(json.toString()) }
+
+                val responseCode = conn.responseCode
+                val responseText = BufferedReader(InputStreamReader(conn.inputStream)).use { it.readText() }
+
+                runOnUiThread {
+                    if (responseCode in 200..299) {
+                        tbProductos.removeAllViews() // Limpiar resultados anteriores
+                        val jsonResponse = JSONObject(responseText)
+                        agregarFilaTabla(jsonResponse)
+                    } else {
+                        Toast.makeText(this, "No se encontró el servicio: $responseCode", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                conn.disconnect()
+            } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this, "Error de conexión: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }.start()
+    }
+
+    private fun agregarFilaTabla(json: JSONObject) {
+        val fila = LayoutInflater.from(this).inflate(R.layout.listar_layout, null, false)
+        val tvCodigo = fila.findViewById<TextView>(R.id.tvCodigo)
+        val tvDescripcion = fila.findViewById<TextView>(R.id.tvDescripcion)
+        val tvPrecio = fila.findViewById<TextView>(R.id.tvPrecio)
+
+        tvCodigo.text = json.optString("idservicio")
+        tvDescripcion.text = json.optString("descripcion")
+        tvPrecio.text = json.optDouble("costo").toString()
+
+        fila.setOnClickListener {
+            resetColorFilas()
+            fila.setBackgroundColor(Color.GRAY)
+        }
+
+        tbProductos.addView(fila)
+    }
+
+    private fun resetColorFilas() {
+        for (i in 0 until tbProductos.childCount) {
+            tbProductos.getChildAt(i).setBackgroundColor(Color.WHITE)
         }
     }
 }
