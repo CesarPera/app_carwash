@@ -14,7 +14,6 @@ public class servicio_entidad {
     private float costo;         // FLOAT
     private String observacion;  // VARCHAR(100)
 
-
     // 🔹 Getters y Setters
     public String getIdservicio() {
         return idservicio;

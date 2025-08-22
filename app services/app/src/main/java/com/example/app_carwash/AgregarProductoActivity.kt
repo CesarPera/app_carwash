@@ -1,6 +1,5 @@
 package com.example.app_carwash
 
-import android.app.Activity
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +8,6 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import android.content.Intent
-
 
 class AgregarProductoActivity : AppCompatActivity() {
     var tbproductos: TableLayout? = null
