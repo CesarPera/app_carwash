@@ -13,6 +13,17 @@ class MainActivity2 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
+        lateinit var btnCerrarSesion: Button
+
+        btnCerrarSesion = findViewById(R.id.btnCerrarSesion)
+
+        btnCerrarSesion.setOnClickListener {
+            // Limpiar cualquier sesión si tienes SharedPreferences
+            val intent = Intent(this, Login_Activity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
     val btnServicio = findViewById<Button>(R.id.btnServicio)
     val btnVentas = findViewById<Button>(R.id.btnVentas)
     val btnPersonal = findViewById<Button>(R.id.btnPersonal)

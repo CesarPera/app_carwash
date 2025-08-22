@@ -1,16 +1,15 @@
 package tarnsformwash.backend.controlador;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tarnsformwash.backend.entidad.vehiculo_entidad;
 import tarnsformwash.backend.negocio.vehiculo_negocio;
-
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/vehiculos")
+@CrossOrigin(origins = "*")
 public class vehiculo_controlador {
 
     @Autowired

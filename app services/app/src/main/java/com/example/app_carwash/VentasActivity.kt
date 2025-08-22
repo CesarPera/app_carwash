@@ -11,6 +11,8 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
+import android.widget.Button
+import android.widget.EditText
 
 class VentasActivity : AppCompatActivity() {
     private lateinit var edtFecha: EditText
@@ -32,6 +34,7 @@ class VentasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ventas)
 
+
         // Inicializar vistas
         edtFecha = findViewById(R.id.edtFecha)
         edtDocumento = findViewById(R.id.edtDocumento)
@@ -46,6 +49,19 @@ class VentasActivity : AppCompatActivity() {
         btnEliminar = findViewById(R.id.btnEliminar)
         btnRegresar = findViewById(R.id.btnRegresar)
 
+        lateinit var dni : EditText
+        lateinit var nombre : EditText
+        lateinit var direccion : EditText
+        lateinit var movil : EditText
+        lateinit var fechaIngreso : EditText
+        lateinit var email : EditText
+        lateinit var sueldo : EditText
+        lateinit var btnGuardar : Button
+        lateinit var btnVolver : Button
+
+        val btnRegresar = findViewById<Button>(R.id.btnRegresar)
+
+
         // Eventos
         btnAgregar.setOnClickListener { agregarVenta() }
         btnEditar.setOnClickListener { editarVenta() }
@@ -57,6 +73,7 @@ class VentasActivity : AppCompatActivity() {
 
         listarVentas() // Listar al iniciar
     }
+
 
     private fun listarVentas() {
         Thread {
@@ -261,3 +278,6 @@ class VentasActivity : AppCompatActivity() {
         edtObservacion.text.clear()
     }
 }
+
+
+
