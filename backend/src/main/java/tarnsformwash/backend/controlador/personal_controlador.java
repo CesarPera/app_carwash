@@ -23,7 +23,7 @@ public class personal_controlador {
         return personal_negocio.listarTodos();
     }
 
-    @PostMapping( "/crear")
+    @PostMapping
     public personal_entidad crear(@RequestBody Map<String, String> body) throws Exception{
         personal_entidad personal = new personal_entidad();
         personal.setDniPersona(body.get("dniPersona"));
