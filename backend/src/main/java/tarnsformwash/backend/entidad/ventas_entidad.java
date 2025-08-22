@@ -1,44 +1,102 @@
 package tarnsformwash.backend.entidad;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
+
+import jakarta.persistence.*;
+
+import java.util.Date;
+
+@Entity
+@Table(name = "servicio_otorgado")
 public class ventas_entidad {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String fecha;
+    @Id
+    @Column(name = "idservicio_otorgado", length = 7)
+    private String idservicioOtorgado;
+
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
+    private Date fecha;
+
+    @Column(nullable = false, length = 20)
     private String documento;
-    private Double costo;
-    private Integer idServicio;
-    private String placa;
-    private String dni;
+
+    @Column(nullable = false)
+    private Float costo;
+
+    @Column(nullable = false, length = 100)
     private String observacion;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    @Column(name = "idservicio", nullable = false, length = 5)
+    private String idservicio;
 
-    public String getFecha() { return fecha; }
-    public void setFecha(String fecha) { this.fecha = fecha; }
+    @Column(name = "placa", nullable = false, length = 18)
+    private String placa;
 
-    public String getDocumento() { return documento; }
-    public void setDocumento(String documento) { this.documento = documento; }
+    @Column(name = "dni_persona", nullable = false, length = 8)
+    private String dniPersona;
 
-    public Double getCosto() { return costo; }
-    public void setCosto(Double costo) { this.costo = costo; }
+    public String getIdservicioOtorgado() {
+        return idservicioOtorgado;
+    }
 
-    public Integer getIdServicio() { return idServicio; }
-    public void setIdServicio(Integer idServicio) { this.idServicio = idServicio; }
+    public void setIdservicioOtorgado(String idservicioOtorgado) {
+        this.idservicioOtorgado = idservicioOtorgado;
+    }
 
-    public String getPlaca() { return placa; }
-    public void setPlaca(String placa) { this.placa = placa; }
+    public Date getFecha() {
+        return fecha;
+    }
 
-    public String getDni() { return dni; }
-    public void setDni(String dni) { this.dni = dni; }
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
 
-    public String getObservacion() { return observacion; }
-    public void setObservacion(String observacion) { this.observacion = observacion; }
+    public String getDocumento() {
+        return documento;
+    }
 
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
+    public Float getCosto() {
+        return costo;
+    }
+
+    public void setCosto(Float costo) {
+        this.costo = costo;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+
+    public String getIdservicio() {
+        return idservicio;
+    }
+
+    public void setIdservicio(String idservicio) {
+        this.idservicio = idservicio;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getDniPersona() {
+        return dniPersona;
+    }
+
+    public void setDniPersona(String dniPersona) {
+        this.dniPersona = dniPersona;
+    }
 }

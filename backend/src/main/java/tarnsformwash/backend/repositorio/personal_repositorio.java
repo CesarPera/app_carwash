@@ -2,8 +2,9 @@ package tarnsformwash.backend.repositorio;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import tarnsformwash.backend.entidad.ventas_entidad;
+import tarnsformwash.backend.entidad.personal_entidad;
 
 @Repository
-public interface ventas_repositorio extends JpaRepository<ventas_entidad, String> {
+public interface personal_repositorio extends JpaRepository<personal_entidad, String> {
+
 }
