@@ -3,7 +3,6 @@ package tarnsformwash.backend.controlador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tarnsformwash.backend.entidad.personal_entidad;
-import tarnsformwash.backend.entidad.vehiculo_entidad;
 import tarnsformwash.backend.negocio.personal_negocio;
 
 import java.text.SimpleDateFormat;

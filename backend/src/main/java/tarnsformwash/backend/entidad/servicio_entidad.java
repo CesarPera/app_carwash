@@ -8,11 +8,11 @@ import jakarta.persistence.Table;
 @Table(name = "servicio")
 public class servicio_entidad {
     @Id
-    private String idservicio;   // VARCHAR(5) → clave primaria
+    private String idservicio;
 
-    private String descripcion;  // VARCHAR(100)
-    private float costo;         // FLOAT
-    private String observacion;  // VARCHAR(100)
+    private String descripcion;
+    private float costo;
+    private String observacion;
 
     // 🔹 Getters y Setters
     public String getIdservicio() {

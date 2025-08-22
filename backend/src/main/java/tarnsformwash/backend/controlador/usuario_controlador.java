@@ -1,6 +1,5 @@
 package tarnsformwash.backend.controlador;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tarnsformwash.backend.entidad.usuario_entidad;
@@ -18,8 +17,8 @@ public class usuario_controlador {
 
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody Map<String, String> body) {
-        String nombre = body.get("nombre");  // 👈 Android/Postman manda "usuario"
-        String clave = body.get("clave");     // 👈 Android/Postman manda "clave"
+        String nombre = body.get("nombre");
+        String clave = body.get("clave");
 
         Map<String, Object> response = new HashMap<>();
         usuario_entidad u = usuarioNegocio.login(nombre, clave);
