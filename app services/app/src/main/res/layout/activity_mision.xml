@@ -4,6 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#00BCD4"
     tools:context=".MisionActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MISIÓN"
+        android:textColor="#131313"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.058" />
+
+    <TextView
+        android:id="@+id/txtMision"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:padding="10dp"
+        android:text="Nuestra misión es ofrecer un servicio de carwash de alta calidad,
+caracterizado por la rapidez, el cuidado detallado y la atención personalizada a cada vehículo
+y cliente. Nos comprometemos a mantener estándares de excelencia que aseguren la satisfacción
+plena de quienes confían en nosotros."
+        android:textColor="#212121"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.649" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="374dp"
+        android:layout_height="297dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.172"
+        app:srcCompat="@drawable/imgmision" />
+
+    <Button
+        android:id="@+id/btnvolver2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Volver"
+        app:icon="@drawable/volver"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.855" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
