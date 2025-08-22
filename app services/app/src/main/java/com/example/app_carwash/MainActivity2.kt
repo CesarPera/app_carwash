@@ -19,7 +19,7 @@ class MainActivity2 : AppCompatActivity() {
     val btnVehiculo = findViewById<Button>(R.id.btnVehiculo)
 
         btnServicio.setOnClickListener {
-            startActivity(Intent(this, ServicioActivity::class.java))
+            startActivity(Intent(this, AgregarProductoActivity::class.java))
         }
 
         btnVentas.setOnClickListener {
