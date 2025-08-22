@@ -15,20 +15,18 @@ import android.widget.Button
 import android.widget.EditText
 
 class VentasActivity : AppCompatActivity() {
-    private lateinit var edtFecha: EditText
-    private lateinit var edtDocumento: EditText
-    private lateinit var edtCosto: EditText
-    private lateinit var edtIdServicio: EditText
-    private lateinit var edtPlaca: EditText
-    private lateinit var edtDni: EditText
-    private lateinit var edtObservacion: EditText
-    private lateinit var tbProductos: TableLayout
-    private lateinit var btnAgregar: Button
-    private lateinit var btnEditar: Button
-    private lateinit var btnEliminar: Button
-    private lateinit var btnRegresar: Button
-
-    private val baseUrl = "http://localhost:8080/ventas" //
+    lateinit var edtFecha: EditText
+    lateinit var edtDocumento: EditText
+    lateinit var edtCosto: EditText
+    lateinit var edtIdServicio: EditText
+    lateinit var edtPlaca: EditText
+    lateinit var edtDni: EditText
+    lateinit var edtObservacion: EditText
+    lateinit var tbProductos: TableLayout
+    lateinit var btnAgregar: Button
+    lateinit var btnEditar: Button
+    lateinit var btnEliminar: Button
+    lateinit var btnRegresar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +76,7 @@ class VentasActivity : AppCompatActivity() {
     private fun listarVentas() {
         Thread {
             try {
-                val url = URL("http://localhost:8080/ventas")
+                val url = URL(Conexion.getUrl("/ventas"))
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "GET"
                 conn.connect()
@@ -105,21 +103,37 @@ class VentasActivity : AppCompatActivity() {
                         for (i in 0 until jsonArray.length()) {
                             val venta = jsonArray.getJSONObject(i)
                             val row = TableRow(this)
-                            listOf(
-                                venta.getString("idservicioOtorgado"),
-                                venta.getString("documento"),
-                                venta.getString("costo"),
-                                venta.getString("idservicio"),
-                                venta.getString("placa"),
-                                venta.getString("dniPersona")
-                            ).forEach { texto ->
+
+                            val id = venta.getString("idservicioOtorgado")
+                            val documento = venta.getString("documento")
+                            val costo = venta.getString("costo")
+                            val servicio = venta.getString("idservicio")
+                            val placa = venta.getString("placa")
+                            val dni = venta.getString("dniPersona")
+                            val fecha = venta.optString("fecha", "")
+                            val observacion = venta.optString("observacion", "")
+
+                            listOf(id, documento, costo, servicio, placa, dni).forEach { texto ->
                                 val tv = TextView(this)
                                 tv.text = texto
-                                tv.setPadding(8,8,8,8)
+                                tv.setPadding(8, 8, 8, 8)
                                 row.addView(tv)
                             }
+
+                            // ⚡ Selección de fila → llena los EditText
+                            row.setOnClickListener {
+                                edtIdServicio.setText(id)
+                                edtDocumento.setText(documento)
+                                edtCosto.setText(costo)
+                                edtPlaca.setText(placa)
+                                edtDni.setText(dni)
+                                edtFecha.setText(fecha)
+                                edtObservacion.setText(observacion)
+                            }
+
                             tbProductos.addView(row)
                         }
+
                     } else {
                         Toast.makeText(this, "Error al listar ventas", Toast.LENGTH_SHORT).show()
                     }
@@ -134,12 +148,10 @@ class VentasActivity : AppCompatActivity() {
     }
 
     private fun agregarVenta() {
-        val body = crearJsonBody()
-        if (body == null) return
-
+        val body = crearJsonBody(isUpdate = false) ?: return
         Thread {
             try {
-                val url = URL("http://localhost:8080/ventas")
+                val url = URL(Conexion.getUrl("/ventas"))
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "POST"
                 conn.setRequestProperty("Content-Type", "application/json; utf-8")
@@ -148,33 +160,26 @@ class VentasActivity : AppCompatActivity() {
                 OutputStreamWriter(conn.outputStream).use { it.write(body.toString()) }
 
                 val responseCode = conn.responseCode
-                val response = BufferedReader(InputStreamReader(conn.inputStream)).readText()
-
                 runOnUiThread {
                     if (responseCode == 200) {
                         Toast.makeText(this, "Venta agregada", Toast.LENGTH_SHORT).show()
                         limpiarCampos()
                         listarVentas()
                     } else {
-                        Toast.makeText(this, "Error al agregar venta", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Error al agregar venta ($responseCode)", Toast.LENGTH_SHORT).show()
                     }
                 }
-
             } catch (e: Exception) {
-                runOnUiThread {
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-                }
+                runOnUiThread { Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show() }
             }
         }.start()
     }
 
     private fun editarVenta() {
-        val body = crearJsonBody()
-        if (body == null) return
-
+        val body = crearJsonBody(isUpdate = true) ?: return
         Thread {
             try {
-                val url = URL("http://localhost:8080/ventas")
+                val url = URL(Conexion.getUrl("/ventas"))
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "PUT"
                 conn.setRequestProperty("Content-Type", "application/json; utf-8")
@@ -183,25 +188,21 @@ class VentasActivity : AppCompatActivity() {
                 OutputStreamWriter(conn.outputStream).use { it.write(body.toString()) }
 
                 val responseCode = conn.responseCode
-                val response = BufferedReader(InputStreamReader(conn.inputStream)).readText()
-
                 runOnUiThread {
                     if (responseCode == 200) {
                         Toast.makeText(this, "Venta editada", Toast.LENGTH_SHORT).show()
                         limpiarCampos()
                         listarVentas()
                     } else {
-                        Toast.makeText(this, "Error al editar venta", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Error al editar venta ($responseCode)", Toast.LENGTH_SHORT).show()
                     }
                 }
-
             } catch (e: Exception) {
-                runOnUiThread {
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-                }
+                runOnUiThread { Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show() }
             }
         }.start()
     }
+
 
     private fun eliminarVenta() {
         val id = edtIdServicio.text.toString()
@@ -212,7 +213,7 @@ class VentasActivity : AppCompatActivity() {
 
         Thread {
             try {
-                val url = URL("http://localhost:8080/ventas")
+                val url = URL(Conexion.getUrl("/ventas"))
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "DELETE"
                 conn.setRequestProperty("Content-Type", "application/json; utf-8")
@@ -240,8 +241,14 @@ class VentasActivity : AppCompatActivity() {
         }.start()
     }
 
-    private fun crearJsonBody(): JSONObject? {
-        val idServicio = edtIdServicio.text.toString()
+    private fun crearJsonBody(isUpdate: Boolean = false): JSONObject? {
+        // ⚡ Si es update, usamos el valor del campo, si es crear, generamos un random de 4 dígitos
+        val idServicio = if (isUpdate) {
+            edtIdServicio.text.toString()
+        } else {
+            (1000..9999).random().toString() // Genera un número aleatorio de 4 dígitos
+        }
+
         val fecha = edtFecha.text.toString()
         val documento = edtDocumento.text.toString()
         val costo = edtCosto.text.toString()
@@ -249,7 +256,7 @@ class VentasActivity : AppCompatActivity() {
         val dni = edtDni.text.toString()
         val observacion = edtObservacion.text.toString()
 
-        if (idServicio.isBlank() || fecha.isBlank() || documento.isBlank() || costo.isBlank()) {
+        if (fecha.isBlank() || documento.isBlank() || costo.isBlank()) {
             runOnUiThread {
                 Toast.makeText(this, "Complete los campos obligatorios", Toast.LENGTH_SHORT).show()
             }
@@ -257,14 +264,18 @@ class VentasActivity : AppCompatActivity() {
         }
 
         val body = JSONObject()
+
+        // ⚡ Siempre enviar idservicio_otorgado
         body.put("idservicio_otorgado", idServicio)
+
         body.put("fecha", fecha)
         body.put("documento", documento)
         body.put("costo", costo.toFloat())
-        body.put("idservicio", idServicio)
+        body.put("idservicio", idServicio) // <- si realmente este campo es distinto, dime y lo ajustamos
         body.put("placa", placa)
         body.put("dni_persona", dni)
         body.put("observacion", observacion)
+
         return body
     }
 
