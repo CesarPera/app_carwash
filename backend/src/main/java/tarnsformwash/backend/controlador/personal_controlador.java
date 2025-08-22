@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/personal")
+@CrossOrigin(origins = "*")
 public class personal_controlador {
 
     @Autowired
@@ -22,7 +23,7 @@ public class personal_controlador {
         return personal_negocio.listarTodos();
     }
 
-    @PostMapping
+    @PostMapping( "/crear")
     public personal_entidad crear(@RequestBody Map<String, String> body) throws Exception{
         personal_entidad personal = new personal_entidad();
         personal.setDniPersona(body.get("dniPersona"));
