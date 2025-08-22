@@ -12,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping ("/ventas")
+@CrossOrigin(origins = "*")
 public class ventas_controlador {
     @Autowired
     private ventas_negocio ventas_negocio;
